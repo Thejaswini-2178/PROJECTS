@@ -95,30 +95,30 @@
             // Render tasks in their respective categories
             renderTasks() {
                 // Helper function to render tasks
-                const 
-                renderCategory = (category, containerId) => {
-                    const container = document.getElementById(containerId);
-                    container.innerHTML = ""; // Clear existing tasks
+                const
+                    renderCategory = (category, containerId) => {
+                        const container = document.getElementById(containerId);
+                        container.innerHTML = ""; // Clear existing tasks
 
-                    this.tasks[category].forEach((task) => {
-                        const taskItem = document.createElement("li");
-                        taskItem.className =
-                            "flex justify-between items-center bg-gray-100 p-3 rounded";
+                        this.tasks[category].forEach((task) => {
+                            const taskItem = document.createElement("li");
+                            taskItem.className =
+                                "flex justify-between items-center bg-gray-100 p-3 rounded";
 
-                        taskItem.innerHTML = `
+                            taskItem.innerHTML = `
             <span>${task.name}</span>
             <div>
               ${category !== "completed"
-                                ? `<button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600" onclick="taskManager.moveTask(${task.id}, '${category}', '${category === "pending" ? "inProgress" : "completed"}')">Move</button>`
-                                : ""
-                            }
+                                    ? `<button class="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600" onclick="taskManager.moveTask(${task.id}, '${category}', '${category === "pending" ? "inProgress" : "completed"}')">Move</button>`
+                                    : ""
+                                }
               <button class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600" onclick="taskManager.removeTask(${task.id}, '${category}')">Remove</button>
             </div>
           `;
 
-                        container.appendChild(taskItem);
-                    });
-                };
+                            container.appendChild(taskItem);
+                        });
+                    };
 
                 renderCategory("pending", "pendingTasks");
                 renderCategory("inProgress", "inProgressTasks");
