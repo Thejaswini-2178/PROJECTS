@@ -30,69 +30,69 @@
         </div>
     </div>
     <script>
-        const quizApp={
-            questions:[],
-            userAnswers:{},
-            addQuestion(question){
+        const quizApp = {
+            questions: [],
+            userAnswers: {},
+            addQuestion(question) {
                 this.questions.push(question)
             },
-            randamizeQuestion(){
-                this.questions.sort(()=>Math.random()-0.5)
+            randamizeQuestion() {
+                this.questions.sort(() => Math.random() - 0.5)
             },
-            renderQuize(){
-                const quizeContainer=document.getElementById("quizContainer");
-                quizeContainer.innerHTML=""
-                this.questions.forEach((question,index)=>{
-                    const questionDiv=document.createElement("div");
+            renderQuize() {
+                const quizeContainer = document.getElementById("quizContainer");
+                quizeContainer.innerHTML = ""
+                this.questions.forEach((question, index) => {
+                    const questionDiv = document.createElement("div");
                     // questionDiv.className="mb-6"
-                    questionDiv.innerHTML=`
-                    <p>${index+1}.${question.text}</p>
-                    ${question.options.map((option,i)=>`<label>
+                    questionDiv.innerHTML = `
+                    <p>${index + 1}.${question.text}</p>
+                    ${question.options.map((option, i) => `<label>
                         <input type="radio" name="question-${index}" value="${option}"/>${option}<br/>
                         </label>`).join("")}
                     `
                     quizeContainer.appendChild(questionDiv)
                 })
             },
-            collectAnswer(){
-                this.questions.forEach((question,index)=>{
-                    const selectedOption=document.querySelector(`
+            collectAnswer() {
+                this.questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`
                     input[name="question-${index}"]:checked
                     `)
                     // console.log(this.userAnswers)
-                    this.userAnswers[question.id]=selectedOption?selectedOption.value:null;
+                    this.userAnswers[question.id] = selectedOption ? selectedOption.value : null;
                     console.log(this.userAnswers)
                 })
             },
-            calculateScore(){
-                let score=0;
-                const unanswered=[]
-                this.questions.forEach((question)=>{
-                    const userAnswer=this.userAnswers[question.id]
-                    console.log("userAnswer",userAnswer)
-                    if(!userAnswer){
+            calculateScore() {
+                let score = 0;
+                const unanswered = []
+                this.questions.forEach((question) => {
+                    const userAnswer = this.userAnswers[question.id]
+                    console.log("userAnswer", userAnswer)
+                    if (!userAnswer) {
                         unanswered.push(question.text)
                         return
                     }
-                    console.log("userAnswer",userAnswer)
-                    const correctAnswer=question.options.find((option)=>option===question.correctAnswer)
-                    if(userAnswer===correctAnswer){
+                    console.log("userAnswer", userAnswer)
+                    const correctAnswer = question.options.find((option) => option === question.correctAnswer)
+                    if (userAnswer === correctAnswer) {
                         score++
                     }
                 })
-                return {score,unanswered}
+                return { score, unanswered }
             },
-            displayScore(result){
-                const scoreContainer=document.getElementById("scoreContainer")
+            displayScore(result) {
+                const scoreContainer = document.getElementById("scoreContainer")
                 scoreContainer.classList.remove("hidden")
 
-                if(result.unanswered.length>0){
-                    scoreContainer.innerHTML=`
+                if (result.unanswered.length > 0) {
+                    scoreContainer.innerHTML = `
                     <p>Your Score:${result.score}/${this.questions.length}</p>
-                    <ul>${result.unanswered.map((q)=>`<li>${q}</li>`).join("")}</ul>
+                    <ul>${result.unanswered.map((q) => `<li>${q}</li>`).join("")}</ul>
                     `
-                }else{
-                    scoreContainer.innerHTML=`<p>Your Score:${result.score}/${this.questions.length}</p>`
+                } else {
+                    scoreContainer.innerHTML = `<p>Your Score:${result.score}/${this.questions.length}</p>`
                 }
             }
         }
@@ -118,10 +118,10 @@
         quizApp.collectAnswer()
         quizApp.renderQuize()
 
-        document.getElementById("submitQuiz").addEventListener("click",()=>{
-        quizApp.collectAnswer()
-        const result=quizApp.calculateScore()
-        quizApp.displayScore(result)
+        document.getElementById("submitQuiz").addEventListener("click", () => {
+            quizApp.collectAnswer()
+            const result = quizApp.calculateScore()
+            quizApp.displayScore(result)
         })
     </script>
 
