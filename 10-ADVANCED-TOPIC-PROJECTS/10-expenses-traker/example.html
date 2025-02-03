@@ -105,19 +105,19 @@
             }))
             renderExpenses()
         }
-        const totalExpenses=()=>{
-            const total=expenses.reduce((sum,expense)=>sum+expense.amount,0)
-            document.getElementById("total-expenses").textContent=total
+        const totalExpenses = () => {
+            const total = expenses.reduce((sum, expense) => sum + expense.amount, 0)
+            document.getElementById("total-expenses").textContent = total
         }
 
-        const removeEpenses=(id)=>{
-            expenses=expenses.filter((expense)=>expense.id!==id)
+        const removeEpenses = (id) => {
+            expenses = expenses.filter((expense) => expense.id !== id)
             renderExpenses()
         }
 
 
         document.addEventListener("DOMContentLoaded", loadFromLocalStorage())
-            
+
     </script>
 </body>
 
