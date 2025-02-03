@@ -38,7 +38,7 @@
         let expenses = []
         const fetchExpenses = async () => {
             try {
-                const response =await fetch("http://localhost:3000/expenses")
+                const response = await fetch("http://localhost:3000/expenses")
                 if (!response.ok) throw new Error("Faild to fetch error")
                 const data = await response.json()
                 expenses = data.map((expense) => ({
@@ -54,7 +54,7 @@
         }
         fetchExpenses()
 
-        
+
         const saveToLocalStorage = () => {
             localStorage.setItem("expenses", JSON.stringify(expenses))
         }
@@ -85,7 +85,7 @@
             expensesList.innerHTML = ""
 
             expenses.forEach((expense) => {
-                const expensesDiv=document.createElement("div")
+                const expensesDiv = document.createElement("div")
                 expensesDiv.className = "p-4 border rounded flex justify-between items-center";
                 expensesDiv.innerHTML = `
             <div>
@@ -95,28 +95,28 @@
             </div>
             <button  style="background-color:red ;color:white"; onclick="removeExpense(${expense.id})">Remove</button>
             `
-            expensesList.appendChild(expensesDiv)
+                expensesList.appendChild(expensesDiv)
             })
             totalExpenses()
         }
 
-        const loadFromLocalStorage=()=>{
-            const storedExpenses=JSON.parse(localStorage.getItem("expenses")||"[]")
-            expenses=storedExpenses.map((expense)=>({
-                id:expense.id,
-                description:expense.description,
-                amount:expense.amount,
-                category:expense.category
+        const loadFromLocalStorage = () => {
+            const storedExpenses = JSON.parse(localStorage.getItem("expenses") || "[]")
+            expenses = storedExpenses.map((expense) => ({
+                id: expense.id,
+                description: expense.description,
+                amount: expense.amount,
+                category: expense.category
             }))
             renderExpenses()
         }
 
-        const totalExpenses=()=>{
-            const total=expenses.reduce((sum,expense)=>sum+expense.amount,0)
-            document.getElementById("total-expenses").textContent=total.toFixed(2)
+        const totalExpenses = () => {
+            const total = expenses.reduce((sum, expense) => sum + expense.amount, 0)
+            document.getElementById("total-expenses").textContent = total.toFixed(2)
         }
-        const removeExpense=(id)=>{
-            expenses =expenses.filter((expense)=>expense.id !==id)
+        const removeExpense = (id) => {
+            expenses = expenses.filter((expense) => expense.id !== id)
             renderExpenses()
         }
 
