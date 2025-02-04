@@ -83,7 +83,6 @@
                     this.renderTasks();
                 }
             },
-
             // Remove a task
             removeTask(taskId, category) {
                 this.tasks[category] = this.tasks[category].filter(
@@ -91,7 +90,6 @@
                 );
                 this.renderTasks();
             },
-
             // Render tasks in their respective categories
             renderTasks() {
                 // Helper function to render tasks
@@ -119,7 +117,6 @@
                             container.appendChild(taskItem);
                         });
                     };
-
                 renderCategory("pending", "pendingTasks");
                 renderCategory("inProgress", "inProgressTasks");
                 renderCategory("completed", "completedTasks");
