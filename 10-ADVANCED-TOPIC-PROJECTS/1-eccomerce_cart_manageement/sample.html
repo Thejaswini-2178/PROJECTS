@@ -47,13 +47,18 @@
             addProduct:(product)=>{
                 cart.push(product);
                 totalPrice+=product.price
+                saveCartToLocalStorage(cart);
+                renderCart(cart);
             },
             removeProduct:(productId)=>{
                 cart=cart.filter((p)=>p.id !==productId)
                 totalPrice=cart.reduce((sum,p)=>sum+p.price,0);
+                saveCartToLocalStorage(cart);
+                renderCart(cart);
             },
             getProduct:()=>cart,
             getTotalPrice:()=>totalPrice
+            
         }
        }
        const cart=createCart();
