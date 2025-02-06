@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking System</title>
+    <script defer src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Movie Ticket Booking System</h1>
+
+        <!-- Search Movies Section -->
+        <div class="mb-6">
+            <input id="movie-search" type="text" placeholder="Search movies..."
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div id="movie-list" class="mb-6 bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Available Movies</h2>
+            <ul id="movies" class="list-disc pl-5"></ul>
+        </div>
+
+
+        <!-- Theater Layout Section -->
+        <div id="theater-layout" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Theater Layout</h2>
+
+            <!-- Legend -->
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-green-500 rounded-full mr-2"></div> Available
+                </div>
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-red-500 rounded-full mr-2"></div> Booked
+                </div>
+            </div>
+
+            <!-- Seats -->
+            <div id="seats" class="grid grid-cols-10 gap-2"></div>
+
+            <div class="mt-4 text-center">
+                <button id="confirm-booking" class="bg-green-500 text-white px-4 py-2 rounded">Confirm Booking</button>
+                <button id="cancel-booking" class="bg-red-500 text-white px-4 py-2 rounded">Cancel Booking</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded",async()=>{
+            const movieSearch=document.getElementById("movie-search");
+            const movies=document.getElementById("movies")
+            const seats=document.getElementById("seats");
+            const confirmBookingBtn=document.getElementById("confirm-booking")
+            const cancelBookingBtn=document.getElementById("cancel-booking")
+            let theater;
+
+            const fetchMovies=async()=>{
+                try {
+                    const response=await fetch("http://localhost:3001/movies");
+                    if(!response.ok) throw new Error("failed to fetch movies")
+                    const movies=await response.json();
+                return movies
+                }
+                catch(error){
+                    console.error("Error fetching movies: ",error)
+                    return []
+                }
+            }
+
+            const createTheater=(rows,cols)=>{
+                const seats=Array.from({length:row},()=>Array.from({length:cols},()=>({booked:false})))
+                return{
+                    bookSeate:(row,col)=>{
+                        if(!seats[row][col].booked){
+                            seats[row][col].booked=true;
+                            return true;
+                        }
+                        return false
+                    },
+                    cancelSeates:(row,col)=>{
+                        if(seat[row][col].booked){
+                            seats[row][col].booked=false;
+                            return true;
+                        }
+                        return false;
+                    },
+                    getSeates:()=>seats,
+                }
+            };
+
+            const renderMovies=(movies)=>{
+                moviesContainer.innerHTML=""
+                movies.forEach((movie)=>{
+                    const li=document.createElement("li");
+                    li.textContent=`${movie.title}-${movie.}`
+                })
+            }
+        })
+    </script>
+</body>
+</html>
