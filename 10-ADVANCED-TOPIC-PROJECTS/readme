@@ -1,4 +1,4 @@
-1."npm init--yes"
+ json-server1."npm init--yes"
 2."npm i json-server"
 3.create on object in db.json
 4.run"npx json-server db.json" in terminal run commend (or) "json-server --watch db.json"  
