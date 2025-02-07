@@ -52,59 +52,54 @@
       "quantity": 15
     }
   ],
-  "posts": [
+  "postComments": [
+    {
+      "content": "iam theju",
+      "likes": 3,
+      "id": "1"
+    },
+    {
+      "content": "Social media post editor is working great!klj",
+      "likes": 0,
+      "id": "2"
+    },
+    {
+      "id": "3",
+      "content": "Excited to build more projects!",
+      "likes": 2
+    },
+    {
+      "content": "iam good now",
+      "likes": 5,
+      "id": "912e"
+    },
+    {
+      "id": "e32a",
+      "content": "hii",
+      "likes": 0
+    }
+  ],
+  "movies": [
     {
       "id": "1",
-      "content": "Excited to start my new project! 🚀",
-      "likes": 5,
-      "comments": [
-        "That sounds amazing! Good luck! 🎉",
-        "Can't wait to see your progress!"
-      ]
+      "title": "Inception",
+      "genre": "Sci-Fi",
+      "duration": 148,
+      "rating": 8.8
     },
     {
       "id": "2",
-      "content": "Just finished reading a great book on JavaScript!",
-      "likes": 10,
-      "comments": [
-        "Which book is it? 📖",
-        "That’s awesome! Learning never stops!"
-      ]
+      "title": "The Dark Knight",
+      "genre": "Action",
+      "duration": 152,
+      "rating": 9
     },
     {
-      "id": 1738847329185,
-      "content": "hellow",
-      "likes": 0,
-      "comments": []
-    },
-    {
-      "id": 1738847901277,
-      "content": "hellow",
-      "likes": 0,
-      "comments": []
+      "id": "3",
+      "title": "Interstellar",
+      "genre": "Sci-Fi",
+      "duration": 169,
+      "rating": 8.6
     }
-  ],
-    "movies": [
-      {
-        "id": 1,
-        "title": "Inception",
-        "genre": "Sci-Fi",
-        "duration": 148,
-        "rating": 8.8
-      },
-      {
-        "id": 2,
-        "title": "The Dark Knight",
-        "genre": "Action",
-        "duration": 152,
-        "rating": 9.0
-      },
-      {
-        "id": 3,
-        "title": "Interstellar",
-        "genre": "Sci-Fi",
-        "duration": 169,
-        "rating": 8.6
-      }
-    ]
-  }
+  ]
+}
