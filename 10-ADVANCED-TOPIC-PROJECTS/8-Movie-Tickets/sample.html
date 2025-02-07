@@ -94,7 +94,8 @@
                 moviesContainer.innerHTML=""
                 movies.forEach((movie)=>{
                     const li=document.createElement("li");
-                    li.textContent=`${movie.title}-${movie.}`
+                    li.textContent=`${movie.title}-${movie.genre} (${movie.duration} min,Rating:${movie.rating})`
+                    moviesContainer.appendChild(li)
                 })
             }
         })
