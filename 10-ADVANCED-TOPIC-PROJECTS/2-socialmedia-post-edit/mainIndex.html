@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Media Post Editor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7fafc;
+      color: #2d3748;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .post {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .actions button {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Social Media Posts</h2>
+
+    <form id="addPostForm">
+      <textarea id="postContent" rows="3" style="width: 100%;" placeholder="What's on your mind?" required></textarea>
+      <button type="submit">Add Post</button>
+    </form>
+
+    <div id="postsContainer"></div>
+  </div>
+
+  <script>
+    const apiUrl = "http://localhost:3000/postComments";
+
+    async function fetchPosts() {
+      const response = await fetch(apiUrl);
+      const posts = await response.json();
+      renderPosts(posts);
+    }
+
+    async function addPost(content) {
+      await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content, likes: 0 }),
+      });
+      fetchPosts();
+    }
+
+    async function updatePost(postId, updatedData) {
+      console.log('Updating post with data:', updatedData); 
+      await fetch(`${apiUrl}/${postId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedData),
+      });
+      fetchPosts();
+    }
+
+    function renderPosts(posts) {
+      const container = document.getElementById("postsContainer");
+      container.innerHTML = "";
+
+      posts.forEach(post => {
+        const postElement = document.createElement("div");
+        postElement.classList.add("post");
+
+        postElement.innerHTML = `
+          <p>${post.content}</p>
+          <p>${post.likes} Likes</p>
+          <div class="actions">
+            <button onclick="likePost('${post.id}')">Like</button>
+            <button onclick="editPost('${post.id}', '${post.content}')">Edit</button>
+          </div>
+        `;
+
+        container.appendChild(postElement);
+      });
+    }
+
+    function editPost(postId, oldContent) {
+      const newContent = prompt("Edit your post:", oldContent);
+      if (newContent) {
+        updatePost(postId, { content: newContent, likes: 0 });
+      }
+    }
+
+    async function likePost(postId) {      
+      const response = await fetch(`${apiUrl}/${postId}`);
+      const post = await response.json();
+      const updatedPost = { ...post, likes: post.likes + 1 };  
+      console.log('Post updated with new likes:', updatedPost); 
+      updatePost(postId, updatedPost);  
+    }
+
+    
+    document.getElementById("addPostForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const content = document.getElementById("postContent").value;
+      addPost(content);
+      e.target.reset();
+    });
+
+    fetchPosts();
+  </script>
+</body>
+</html>
