@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7fafc;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .post {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .actions button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Social Media Posts</h2>
+
+        <form id="addPostForm">
+            <textarea id="postContent" rows="3" style="width: 100%;" placeholder="What's on your mind?"
+                required></textarea>
+            <button type="submit">Add Post</button>
+        </form>
+        <div id="postsContainer"></div>
+    </div>
+    <script>
+        //1.fetching the data 
+        const apiUrl = "http://localhost:3000/postComments"
+        async function fetchPosts() {
+            const response = await fetch(apiUrl)
+            const posts = await response.json()
+            console.log(posts)
+            renderPosts(posts)
+        }
+        fetchPosts()
+
+        //  2. rendering the data now
+        function renderPosts(posts) {
+            const postContainer = document.getElementById("postsContainer")
+            postContainer.innerHTML = ""
+            posts.forEach((post) => {
+                const postDiv = document.createElement("div")
+                postDiv.classList.add("post") // CSS styles వచ్చేలా class యాడ్ చేయాలి
+
+                postDiv.innerHTML = `
+                <p>${post.content}</p>
+                <p>${post.likes}Likes</p>
+                <div>
+                    <button onclick="lickPost('${post.id}')">Like</button>
+                    <button onclick="editPost('${post.id}','${post.content}')">Edit</button>
+                </div>
+                `
+                postContainer.appendChild(postDiv)
+            })
+        }
+
+        // 3. adding the new post
+        async function addPost(content){
+            await fetch(apiUrl,{
+                method:"POST",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({content,likes:0}),
+            })
+            fetchPosts()
+        }
+        document.getElementById("addPostForm").addEventListener("submit",(e)=>{
+            e.preventDefault()
+        })
+        
+    </script>
+</body>
+
+</html>
