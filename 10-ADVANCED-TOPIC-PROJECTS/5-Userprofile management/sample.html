@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile Management</title>
+    <script defer src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">User Profile Management</h1>
+
+        <!-- Add User Section -->
+        <div class="mb-6">
+            <input id="username" type="text" placeholder="Username"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <input id="email" type="email" placeholder="Email"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <select id="role" class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+                <option value="Admin">Admin</option>
+                <option value="Subscriber">Subscriber</option>
+            </select>
+            <button id="add-user-btn" class="bg-blue-500 text-white px-4 py-2 rounded">Add User</button>
+        </div>
+
+        <!-- User Profiles Section -->
+        <div id="user-list" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">User Profiles</h2>
+            <div id="users" class="space-y-4"></div>
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>
