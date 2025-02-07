@@ -68,7 +68,7 @@
                 <p>${post.content}</p>
                 <p>${post.likes}Likes</p>
                 <div>
-                    <button onclick="lickPost('${post.id}')">Like</button>
+                    <button onclick="likePost('${post.id}')">Like</button>
                     <button onclick="editPost('${post.id}','${post.content}')">Edit</button>
                 </div>
                 `
@@ -86,8 +86,40 @@
             fetchPosts()
         }
         document.getElementById("addPostForm").addEventListener("submit",(e)=>{
-            e.preventDefault()
+            e.preventDefault();
+            const content=document.getElementById("postContent").value;
+            addPost(content)
+            e.target.reset()
         })
+
+         function editPost(postId,oldContent){
+            const newContent=prompt("edit your post:",oldContent)
+            if(newContent){
+                updatePost(postId,{content:newContent,likes:0})
+            }
+        }
+
+        async function updatePost(postId,updatedData){
+            console.log('updateting post with data:',updatedData)
+            await fetch(`${apiUrl}/${postId}`,{
+                method:"PUT",
+                headers:{"Content-Type":"application/json"},
+                body:JSON.stringify(updatedData)
+            })
+            fetchPosts()
+        }
+       
+
+        // async function likePost(postId){
+        //     const response=await fetch(`${apiUrl}/${postId}`)
+        //     const post=await response.json()
+        //     const updatedPost={...post,likes:post.likes+1}
+        //     console.log('post updated with new likes:',updatedPost)
+        //     updatePost(postId,updatedPost)
+        // }
+        // fetchPosts()
+       
+        
         
     </script>
 </body>
