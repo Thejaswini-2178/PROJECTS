@@ -54,13 +54,13 @@
   ],
   "postComments": [
     {
-      "content": "iam theju",
-      "likes": 3,
+      "content": "iam theju 123456",
+      "likes": 0,
       "id": "1"
     },
     {
       "content": "Social media post editor is working great!klj",
-      "likes": 0,
+      "likes": 4,
       "id": "2"
     },
     {
@@ -70,11 +70,21 @@
     },
     {
       "content": "iam good now",
-      "likes": 5,
+      "likes": 0,
       "id": "912e"
     },
     {
       "id": "e32a",
+      "content": "hii",
+      "likes": 0
+    },
+    {
+      "id": "347a",
+      "content": "hii this is new post",
+      "likes": 0
+    },
+    {
+      "id": "abfc",
       "content": "hii",
       "likes": 0
     }
