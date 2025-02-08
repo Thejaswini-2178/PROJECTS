@@ -80,7 +80,7 @@
             document.getElementById("pending-tasks").innerHTML = categories.pending.map((task, index) =>
                 `<div>
             <span>${task.name}</span>
-            <button onclick="startTask(${index},'pending','inProgress')">START</button>
+            <button onclick="moveTask(${index},'pending','inProgress')">START</button>
         </div>
         `).join("");
             document.getElementById("in-progress-tasks").innerHTML = categories.inProgress.map((task, index) =>
@@ -89,14 +89,14 @@
             <button onclick="moveTask(${index},'inProgress','completed')">Completed</button>
         </div>
         `).join("");
-        document.getElementById("completed-tasks").innerHTML = categories.completed.map((task, index) =>
+        document.getElementById("completed-tasks").innerHTML = categories.completed.map((task,index) =>
                 `<div>
             <span>${task.name}</span>
-            <button onclick="removeTask(${index})">START</button>
+            <button onclick="removeTask(${index})">Remove</button>
         </div>
         `).join("")
-        }
 
+    }
         // add the new task 
        document.getElementById("add-task-btn").addEventListener("click",()=>{
         const taskName=document.getElementById("task-name").value;
@@ -122,8 +122,8 @@
 
 
     // remove the task
-    const removeTask=(index)=>{
-        categories.completed=categories.completed.filter((_,i)=>index.i !==i)
+        const removeTask = (index) => {
+            categories.completed = categories.completed.filter((_, i) => i !== index)
         saveToLocalStorage()
         renderTask()
     }
