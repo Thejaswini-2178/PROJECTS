@@ -40,12 +40,59 @@
                 author:book.author?.[0]?.name || "Unknown",
                 status:"Available"
             }))
-            console.log("data")            
+            console.log("data")
+            renderBooks()            
             }catch(error){
                 console.log("Error while fetching books:",error)
             }
-        }
+        };
+
+        const renderBooks = () => {
+            const booksContainer = document.getElementById("books");
+            booksContainer.innerHTML = "";
+
+            library.forEach((book) => {
+                const bookElement = document.createElement("div");
+                bookElement.className =
+                    "p-4 border rounded flex justify-between items-center";
+                bookElement.innerHTML = `
+          <div>
+            <p><strong>Title:</strong> ${book.title}</p>
+            <p><strong>Author:</strong> ${book.author}</p>
+            <p><strong>Status:</strong> ${book.status}</p>
+          </div>
+          <div>
+            <button class="bg-yellow-500 text-white px-2 py-1 rounded mb-2" 
+              onclick="lendBook('${book.id}')">Lend</button>
+            <button class="bg-green-500 text-white px-2 py-1 rounded mb-2" 
+              onclick="returnBook('${book.id}')">Return</button>
+          </div>
+        `;
+                booksContainer.appendChild(bookElement);
+            });
+        };
+        const createBook = ({ id, title, author, status }) => {
+            if (status !== "Available" && status !== "Lent Out") {
+                throw new Error("Invalid book status!");
+            }
+
+            return {
+                id,
+                title,
+                author,
+                status,
+                setStatus(newStatus) {
+                    if (newStatus !== "Available" && newStatus !== "Lent Out") {
+                        throw new Error("Invalid book status!");
+                    }
+                    this.status = newStatus;
+                },
+            };
+        };
         
+        document.addEventListener("DOMContentLoaded", fetchBooks);
+
+
 
     </script>
 </body>
