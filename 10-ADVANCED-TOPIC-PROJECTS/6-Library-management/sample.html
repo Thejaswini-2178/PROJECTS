@@ -94,7 +94,7 @@
             document.getElementById("author").value = "";
         });
 
-        
+
         const createBook = ({ id, title, author, status }) => {
             if (status !== "Available" && status !== "Lent Out") {
                 throw new Error("Invalid book status!");
@@ -114,6 +114,7 @@
             };
         };
 
+        const lendingTracker = createLendingTracker();
         const createLendingTracker = () => {
             const lendingDurations = new Map();
             return {
@@ -150,7 +151,6 @@
                 alert("Book is not available!");
             }
         };
-        const lendingTracker = createLendingTracker();
 
         document.addEventListener("DOMContentLoaded", fetchBooks);
 
