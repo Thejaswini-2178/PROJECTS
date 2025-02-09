@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Library Management System</h1>
+
+        <!-- Add Book Section -->
+        <div class="mb-6">
+            <input id="book-title" type="text" placeholder="Book Title"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <input id="author" type="text" placeholder="Author"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 mb-2">
+            <button id="add-book-btn" class="bg-blue-500 text-white px-4 py-2 rounded">Add Book</button>
+        </div>
+
+        <!-- Library Inventory Section -->
+        <div id="library" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Library Inventory</h2>
+            <div id="books" class="space-y-4"></div>
+        </div>
+    </div>
+    <script>
+        let library = []
+        const fetchBooks = async () => {
+            try {
+                const response = await fetch("https://openlibrary.org/subjects/science.json?limit=5")
+                if (!response.ok) throw new Error("Failed to fetch")
+                const data=await response.json()
+            console.log(data)
+            library=data.works.map((book)=>({
+                id:book.key,
+                title:book.title,
+                author:book.author?.[0]?.name || "Unavailable"
+            }))
+            } catch(error){
+                console.error("Error while Fetching")
+            }
+        }
+        document.addEventListener("DOMContentLoaded",fetchBooks)
+
+        const renderBooks=()=>{
+            const bookContainer=document.getElementById("books")
+            bookContainer.innerHTML=""
+
+            library.forEach((book)=>{
+                const libraryDiv=document.createElement("div")
+                libraryDiv.innerHTML=`
+                <div>
+                    <span>${book.id}</span>
+                    <span>${book.title}</span>
+                    <span>${book.author}</span>
+                </div>
+                `
+            })
+            
+        }
+    </script>
+</body>
+
+</html>
