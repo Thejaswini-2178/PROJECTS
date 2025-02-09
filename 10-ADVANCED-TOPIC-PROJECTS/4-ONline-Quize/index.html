@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz App</title>
+    <script defer src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Online Quiz App</h1>
+
+        <!-- Quiz Area -->
+        <div id="quiz-container" class="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
+            <div id="question" class="text-lg font-semibold mb-4"></div>
+            <div id="answers" class="space-y-2"></div>
+            <button id="next-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 hidden">Next</button>
+        </div>
+
+        <!-- Timer -->
+        <div id="timer" class="text-center text-lg font-semibold mt-6"></div>
+    </div>
+    <script>
+        // Timer management using closures
+        const createTimer = (duration, onTick, onEnd) => {
+            let timeRemaining = duration;
+            const intervalId = setInterval(() => {
+                if (timeRemaining > 0) {
+                    onTick(timeRemaining);
+                    timeRemaining--;
+                } else {
+                    clearInterval(intervalId);
+                    onEnd();
+                }
+            }, 1000);
+            return () => clearInterval(intervalId); // Return a function to clear the timer
+        };
+
+        // Fetch questions dynamically
+        const fetchQuestions = async (category = "9", amount = 5) => {
+            try {
+                const response = await fetch(
+                    `https://opentdb.com/api.php?amount=${amount}&category=${category}&type=multiple`
+                );
+                if (!response.ok) throw new Error("Failed to fetch questions");
+                const data = await response.json();
+                return data.results;
+            } catch (error) {
+                console.error("Error fetching questions:", error);
+                return [];
+            }
+        };
+
+        // Render questions dynamically
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let correctAnswers = [];
+        let stopTimer;
+
+        const renderQuestion = (questions) => {
+            if (currentQuestionIndex >= questions.length) {
+                document.getElementById("quiz-container").innerHTML =
+                    "<div class='text-center'>Quiz Completed!</div>";
+                calculateScore(userAnswers, correctAnswers);
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            document.getElementById("question").innerHTML = question.question;
+            correctAnswers.push(question.correct_answer);
+
+            const answers = [...question.incorrect_answers, question.correct_answer].sort(
+                () => Math.random() - 0.5
+            );
+            const answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = answers
+                .map(
+                    (answer, index) => `
+        <button class="w-full bg-gray-200 hover:bg-gray-300 p-2 rounded" 
+                onclick="selectAnswer('${answer}')">
+          ${answer}
+        </button>`
+                )
+                .join("");
+
+            document.getElementById("next-btn").classList.add("hidden");
+
+            // Timer
+            stopTimer = createTimer(
+                15,
+                (time) => {
+                    document.getElementById("timer").textContent = `Time Remaining: ${time}s`;
+                },
+                () => {
+                    userAnswers.push(null); // No answer
+                    moveToNextQuestion(questions);
+                }
+            );
+        };
+
+        const selectAnswer = (answer) => {
+            userAnswers[currentQuestionIndex] = answer;
+            document.getElementById("next-btn").classList.remove("hidden");
+            stopTimer(); // Stop timer when user selects an answer
+        };
+
+        const moveToNextQuestion = (questions) => {
+            currentQuestionIndex++;
+            renderQuestion(questions);
+        };
+
+        // Calculate score directly
+        const calculateScore = (answers, correctAnswers) => {
+            const score = answers.reduce((acc, answer, index) => {
+                return acc + (answer === correctAnswers[index] ? 1 : 0);
+            }, 0);
+
+            document.getElementById(
+                "quiz-container"
+            ).innerHTML = `<div class='text-center font-bold text-lg'>Your Score: ${score}/${correctAnswers.length}</div>`;
+        };
+
+        // Start quiz
+        document.addEventListener("DOMContentLoaded", async () => {
+            const questions = await fetchQuestions();
+            renderQuestion(questions);
+
+            document
+                .getElementById("next-btn")
+                .addEventListener("click", () => moveToNextQuestion(questions));
+        });
+    </script>
+</body>
+
+</html>
