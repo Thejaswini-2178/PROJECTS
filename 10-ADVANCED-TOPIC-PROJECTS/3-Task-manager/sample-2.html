@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <script defer src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Task Management System</h1>
+
+        <!-- Add Task Section -->
+        <div class="mb-6">
+            <input id="task-name" type="text" placeholder="Enter task name"
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500">
+            <button id="add-task-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">
+                Add Task
+            </button>
+        </div>
+
+        <!-- Task Categories -->
+        <div class="grid grid-cols-3 gap-4">
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Pending</h2>
+                <div id="pending-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2">In Progress</h2>
+                <div id="in-progress-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold mb-2">Completed</h2>
+                <div id="completed-tasks" class="space-y-2 bg-white p-4 shadow rounded-lg"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const categories = {
+            pending: [],
+            inProgress: [],
+            completed: []
+        }
+
+        // fetchingt the code
+        const fetchTasks = async () => {
+            try {
+                const response = await fetch("https://jsonplaceholder.typicode.com/todos")
+                if (!response.ok) throw new Error("Failed to fething")
+                const data = await response.json()
+                data.slice(0, 5).map((task) => {
+                    categories.pending.push({ name: task.title, status: "pending" })
+                })
+                console.log(data)
+                saveToLocalStorage()
+                renderTask()
+            } catch (error) {
+                console.error("Error While fetching the Code:",error)
+            }
+        }
+        const saveToLocalStorage = () => {
+            localStorage.setItem("tasks", JSON.stringify(categories))
+        }
+        const loadFromLocalStorage = () => {
+            const storeTask = localStorage.getItem("tasks")
+            if (storeTask)
+                Object.assign(categories, JSON.parse(storeTask))
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            loadFromLocalStorage()
+            fetchTasks()
+            renderTask()
+        })
+
+        // render the data
+        const renderTask = () => {
+            document.getElementById("pending-tasks").innerHTML = categories.pending.map((task, index) =>
+                `<div>
+            <span>${task.name}</span>
+            <button onclick="moveTask(${index},'pending','inProgress')">START</button>
+        </div>
+        `).join("");
+            document.getElementById("in-progress-tasks").innerHTML = categories.inProgress.map((task, index) =>
+                `<div>
+            <span>${task.name}</span>
+            <button onclick="moveTask(${index},'inProgress','completed')">Completed</button>
+        </div>
+        `).join("");
+        document.getElementById("completed-tasks").innerHTML = categories.completed.map((task,index) =>
+                `<div>
+            <span>${task.name}</span>
+            <button onclick="removeTask(${index})">Remove</button>
+        </div>
+        `).join("")
+
+    }
+        // add the new task 
+       document.getElementById("add-task-btn").addEventListener("click",()=>{
+        const taskName=document.getElementById("task-name").value;
+        if(taskName){
+            const task={
+                name:taskName,
+                status:"pending",
+            }
+            categories.pending.push(task)
+            saveToLocalStorage()
+            renderTask()
+            document.getElementById("task-name").innerHTML=""
+        }
+       })
+
+    // move task
+    const moveTask=(index,fromCategory,toCategory)=>{
+        const task=categories[fromCategory].splice(index,1)[0]
+        categories[toCategory].push(task)
+        saveToLocalStorage()
+        renderTask()
+    }
+
+
+    // remove the task
+        const removeTask = (index) => {
+            categories.completed = categories.completed.filter((_, i) => i !== index)
+        saveToLocalStorage()
+        renderTask()
+    }
+        
+    
+    </script>
+</body>
+
+
+</html>
