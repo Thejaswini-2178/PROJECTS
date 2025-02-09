@@ -113,8 +113,6 @@
                 },
             };
         };
-
-        const lendingTracker = createLendingTracker();
         const createLendingTracker = () => {
             const lendingDurations = new Map();
             return {
@@ -129,6 +127,8 @@
                 },
             };
         };
+        const lendingTracker = createLendingTracker();
+
 
         const lendBook = (bookId) => {
             const book = library.find((b) => b.id === bookId);
@@ -151,7 +151,6 @@
                 alert("Book is not available!");
             }
         };
-
         document.addEventListener("DOMContentLoaded", fetchBooks);
 
 
