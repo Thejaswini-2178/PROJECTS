@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Social Media Post Editor</h1>
+
+        <!-- Add Post Section -->
+        <div class="mb-6">
+            <textarea id="post-content" placeholder="Write your post here..."
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+            <button id="add-post-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add Post</button>
+        </div>
+
+        <!-- Posts Section -->
+        <div id="posts" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Your Posts</h2>
+            <div id="post-list" class="space-y-4"></div>
+        </div>
+    </div>
+    <script>
+        const posts = []
+        // const api_URL="http://localhost:3000/posts"
+
+        // fetching the Local Server url 
+        const fetchPosts = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/posts")
+            } catch (error) {
+
+            }
+        }
+
+    </script>
+</body>
+
+</html>
