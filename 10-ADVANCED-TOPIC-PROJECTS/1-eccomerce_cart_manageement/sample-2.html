@@ -151,7 +151,6 @@
             }
         };
 
-        // Delete a post
         const deletePost = async (id) => {
             posts = posts.filter(post => post.id !== id);
             renderPosts();
