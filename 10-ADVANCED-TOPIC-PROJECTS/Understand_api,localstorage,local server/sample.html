@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Editor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Social Media Post Editor</h1>
+
+        <!-- Add Post Section -->
+        <div class="mb-6">
+            <textarea id="post-content" placeholder="Write your post here..."
+                class="w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500"></textarea>
+            <button id="add-post-btn" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Add Post</button>
+        </div>
+
+        <!-- Posts Section -->
+        <div id="posts" class="bg-white shadow-lg rounded-lg p-4">
+            <h2 class="text-xl font-semibold mb-4">Your Posts</h2>
+            <div id="post-list" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <script>
+        let posts = [];
+        const API_URL = "http://localhost:3000/posts"; // Ensure this matches your server port
+
+        // Fetch posts from API
+        const fetchPosts = async () => {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error("Failed to fetch posts");
+                posts = await response.json();
+                renderPosts();
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+            }
+        };
+
+        // Add a new post
+        document.getElementById("add-post-btn").addEventListener("click", async () => {
+            const content = document.getElementById("post-content").value.trim();
+            if (!content) {
+                alert("Please enter some content!");
+                return;
+            }
+            const newPost = {
+                id: Date.now(),
+                content,
+                likes: 0,
+                comments: []
+            };
+
+            posts.push(newPost);
+            saveLocalStorage()
+            renderPosts();
+
+            // Clear input field
+            document.getElementById("post-content").value = "";
+
+            // Save to API
+            try {
+                await fetch(API_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(newPost)
+                });
+            } catch (error) {
+                console.error("Error adding post:", error);
+            }
+        });
+
+        // Render posts dynamically
+        const renderPosts = () => {
+            const postList = document.getElementById("post-list");
+            postList.innerHTML = "";
+
+            posts.forEach(post => {
+                const postElement = document.createElement("div");
+                postElement.className = "p-4 border rounded flex flex-col space-y-2";
+
+                postElement.innerHTML = `
+                    <p class="text-lg">${post.content}</p>
+                    <div class="flex justify-between">
+                        <button class="bg-green-500 text-white px-2 py-1 rounded" 
+                            onclick="likePost(${post.id})">Like (${post.likes})</button>
+                        <button class="bg-yellow-500 text-white px-2 py-1 rounded" 
+                            onclick="editPost(${post.id})">Edit</button>
+                        <button class="bg-red-500 text-white px-2 py-1 rounded" 
+                            onclick="deletePost(${post.id})">Delete</button>
+                    </div>
+                    <div>
+                        <input type="text" id="comment-${post.id}" placeholder="Add a comment..."
+                            class="w-full p-2 border rounded-lg">
+                        <button class="bg-blue-500 text-white px-2 py-1 mt-1 rounded" 
+                            onclick="addComment(${post.id})">Comment</button>
+                    </div>
+                    <div class="mt-2 space-y-2">
+                        ${post.comments.map(comment => `<div class="p-2 bg-gray-100 rounded">${comment}</div>`).join("")}
+                    </div>
+                `;
+
+                postList.appendChild(postElement);
+            });
+            saveLocalStorage()
+        };
+
+        // Like a post
+        const likePost = async (id) => {
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                post.likes++;
+                renderPosts();
+
+                try {
+                    await fetch(`${API_URL}/${id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ likes: post.likes })
+                    });
+                } catch (error) {
+                    console.error("Error liking post:", error);
+                }
+            }
+        };
+
+        // Edit a post
+        const editPost = async (id) => {
+            const newContent = prompt("Edit your post:");
+            if (newContent) {
+                const post = posts.find(p => p.id === id);
+                if (post) {
+                    post.content = newContent;
+                    renderPosts();
+
+                    try {
+                        await fetch(`${API_URL}/${id}`, {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ content: newContent })
+                        });
+                    } catch (error) {
+                        console.error("Error editing post:", error);
+                    }
+                }
+            }
+        };
+
+        // Delete a post
+        const deletePost = async (id) => {
+            posts = posts.filter(post => post.id !== id);
+            renderPosts();
+
+            try {
+                await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            } catch (error) {
+                console.error("Error deleting post:", error);
+            }
+        };
+
+        // Add a comment
+        const addComment = async (id) => {
+            const commentInput = document.getElementById(`comment-${id}`);
+            const comment = commentInput.value.trim();
+            if (!comment) return;
+
+            const post = posts.find(p => p.id === id);
+            if (post) {
+                post.comments.push(comment);
+                renderPosts();
+
+                try {
+                    await fetch(`${API_URL}/${id}`, {
+                        method: "PATCH",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ comments: post.comments })
+                    });
+                } catch (error) {
+                    console.error("Error adding comment:", error);
+                }
+            }
+
+            commentInput.value = "";
+        }; 
+
+        // Initialize application
+        document.addEventListener("DOMContentLoaded", ()=>{
+            fetchPosts()
+        saveLocalStorage()
+        });
+
+        const saveLocalStorage=()=>{
+            localStorage.setItem("The Data is now:",JSON.stringify(posts))
+        }
+        const loadFromLocalStorage=()=>{
+        const savedData=localStorage.getItem("The data is")
+        if(savedData){
+            posts=JSON.parse(savedData||[])
+            renderPosts()
+        }
+        }
+    </script>
+</body>
+
+</html>

@@ -111,5 +111,58 @@
       "duration": 169,
       "rating": 8.6
     }
+  ],
+  "posts": [
+    {
+      "id": "1",
+      "content": "Hello, world! This is my first post.",
+      "likes": 5,
+      "comments": [
+        "Great post!",
+        "Nice one!"
+      ]
+    },
+    {
+      "id": "2",
+      "content": "Loving this new social media app!",
+      "likes": 8,
+      "comments": [
+        "Same here!",
+        "Super cool!"
+      ]
+    },
+    {
+      "id": "3",
+      "content": "Does anyone have book recommendations?",
+      "likes": 3,
+      "comments": [
+        "Try 'The Alchemist'",
+        "Check out 'Atomic Habits'"
+      ]
+    },
+    {
+      "id": "1739098550378",
+      "content": "wertyui",
+      "likes": 0,
+      "comments": []
+    },
+    {
+      "id": "1739098558319",
+      "content": "2345ty",
+      "likes": 0,
+      "comments": []
+    },
+    {
+      "id": 1739170208431,
+      "content": "hii",
+      "likes": 0,
+      "comments": []
+    },
+    {
+      "id": 1739170675905,
+      "content": "hii hellow",
+      "likes": 0,
+      "comments": []
+    }
   ]
 }
