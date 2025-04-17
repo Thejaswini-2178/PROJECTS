@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budgeting App</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+    .container { display: flex; gap: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 8px; }
+    button { padding: 10px 15px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    button:hover { background: #45a049; }
+    .chart-container { width: 400px; height: 400px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Budgeting App</h1>
+  
+  <div class="container">
+    <div style="flex: 1;">
+      <h2>Add Transaction</h2>
+      <form id="transactionForm">
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" step="0.01" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select id="type" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        
+        <div class="form-group" id="categoryGroup">
+          <label for="category">Category</label>
+          <select id="category" required></select>
+        </div>
+        
+        <div class="form-group">
+          <label for="date">Date</label>
+          <input type="date" id="date" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <input type="text" id="description">
+        </div>
+        
+        <button type="submit">Add Transaction</button>
+      </form>
+      
+      <h2>Current Balance</h2>
+      <div id="balance" style="font-size: 24px; font-weight: bold;"></div>
+    </div>
+    
+    <div style="flex: 1;">
+      <h2>Monthly Report</h2>
+      <div class="form-group">
+        <label for="reportMonth">Month</label>
+        <input type="month" id="reportMonth" required>
+      </div>
+      <button id="generateReport">Generate Report</button>
+      
+      <div id="reportResults">
+        <h3>Summary</h3>
+        <div id="summary"></div>
+        
+        <h3>Spending by Category</h3>
+        <div class="chart-container">
+          <canvas id="pieChart"></canvas>
+        </div>
+        
+        <h3>Recent Transactions</h3>
+        <table id="transactionsTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <h2>Spending Trends</h2>
+  <div class="chart-container" style="width: 800px;">
+    <canvas id="trendChart"></canvas>
+  </div>
+
+  <script>
+    // Initialize the budgeting app
+    const budgetApp = new BudgetingApp();
+    
+    // DOM elements
+    const transactionForm = document.getElementById('transactionForm');
+    const typeSelect = document.getElementById('type');
+    const categorySelect = document.getElementById('category');
+    const categoryGroup = document.getElementById('categoryGroup');
+    const balanceDisplay = document.getElementById('balance');
+    const reportMonth = document.getElementById('reportMonth');
+    const generateReportBtn = document.getElementById('generateReport');
+    const summaryDiv = document.getElementById('summary');
+    const transactionsTable = document.getElementById('transactionsTable').querySelector('tbody');
+    
+    // Set default date to today
+    document.getElementById('date').valueAsDate = new Date();
+    
+    // Set default report month to current month
+    const today = new Date();
+    reportMonth.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    
+    // Update category options based on transaction type
+    function updateCategoryOptions() {
+      categorySelect.innerHTML = '';
+      
+      if (typeSelect.value === 'income') {
+        const option = document.createElement('option');
+        option.value = 'Income';
+        option.textContent = 'Income';
+        categorySelect.appendChild(option);
+      } else {
+        budgetApp.categories.forEach(category => {
+          const option = document.createElement('option');
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+    }
+    
+    // Update balance display
+    function updateBalance() {
+      balanceDisplay.textContent = `$${budgetApp.getCurrentBalance().toFixed(2)}`;
+    }
+    
+    // Generate and display report
+    function generateReport() {
+      const [year, month] = reportMonth.value.split('-').map(Number);
+      const report = budgetApp.generateMonthlyReport(year, month);
+      
+      // Update summary
+      summaryDiv.innerHTML = `
+        <p>Income: $${report.income.toFixed(2)}</p>
+        <p>Expenses: $${report.expenses.toFixed(2)}</p>
+        <p>Savings: $${report.savings.toFixed(2)}</p>
+      `;
+      
+      // Update transactions table
+      transactionsTable.innerHTML = '';
+      report.transactions.forEach(t => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${t.date.toLocaleDateString()}</td>
+          <td>${t.description || '-'}</td>
+          <td class="${t.type}">${t.type === 'income' ? '+' : '-'}$${Math.abs(t.amount).toFixed(2)}</td>
+          <td>${t.category}</td>
+        `;
+        transactionsTable.appendChild(row);
+      });
+      
+      // Update pie chart
+      updatePieChart(report);
+      
+      // Update trend chart
+      updateTrendChart();
+    }
+    
+    // Pie chart instance
+    let pieChart;
+    function updatePieChart(report) {
+      const pieData = budgetApp.getSpendingPieData(report.year, report.month);
+      
+      const ctx = document.getElementById('pieChart').getContext('2d');
+      
+      if (pieChart) {
+        pieChart.destroy();
+      }
+      
+      pieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: pieData.map(item => item.category),
+          datasets: [{
+            data: pieData.map(item => item.amount),
+            backgroundColor: [
+              '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+              '#9966FF', '#FF9F40', '#8AC24A', '#EA5F89'
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const percentage = (value / report.expenses) * 100;
+                  return `${label}: $${value.toFixed(2)} (${percentage.toFixed(1)}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    // Trend chart instance
+    let trendChart;
+    function updateTrendChart() {
+      const trendData = budgetApp.getTrendData(6);
+      
+      const ctx = document.getElementById('trendChart').getContext('2d');
+      
+      if (trendChart) {
+        trendChart.destroy();
+      }
+      
+      trendChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: trendData.map(item => `${item.year}-${String(item.month).padStart(2, '0')}`),
+          datasets: [
+            {
+              label: 'Income',
+              data: trendData.map(item => item.income),
+              borderColor: '#4BC0C0',
+              backgroundColor: 'rgba(75, 192, 192, 0.1)',
+              tension: 0.1,
+              fill: true
+            },
+            {
+              label: 'Expenses',
+              data: trendData.map(item => item.expenses),
+              borderColor: '#FF6384',
+              backgroundColor: 'rgba(255, 99, 132, 0.1)',
+              tension: 0.1,
+              fill: true
+            },
+            {
+              label: 'Savings',
+              data: trendData.map(item => item.savings),
+              borderColor: '#36A2EB',
+              backgroundColor: 'rgba(54, 162, 235, 0.1)',
+              tension: 0.1,
+              fill: true
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+    
+    // Event listeners
+    typeSelect.addEventListener('change', updateCategoryOptions);
+    
+    transactionForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const amount = parseFloat(document.getElementById('amount').value);
+      const type = document.getElementById('type').value;
+      const category = document.getElementById('category').value;
+      const date = document.getElementById('date').value;
+      const description = document.getElementById('description').value;
+      
+      try {
+        budgetApp.addTransaction(amount, type, category, date, description);
+        transactionForm.reset();
+        document.getElementById('date').valueAsDate = new Date();
+        updateBalance();
+        generateReport();
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+    
+    generateReportBtn.addEventListener('click', generateReport);
+    
+    // Initial setup
+    updateCategoryOptions();
+    updateBalance();
+    generateReport();
+  </script>
+</body>
+</html>
