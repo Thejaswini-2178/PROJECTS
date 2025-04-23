@@ -18,7 +18,7 @@ const historyEl = document.getElementById('history');
 // Initialize map
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 0, lng: 0},
+        center: { lat: 0, lng: 0 },
         zoom: 2
     });
 }
@@ -28,7 +28,7 @@ function startTracking() {
     if (navigator.geolocation) {
         startBtn.disabled = true;
         stopBtn.disabled = false;
-        
+
         // Watch for position changes
         watchId = navigator.geolocation.watchPosition(
             updateLocation,
@@ -49,17 +49,17 @@ function updateLocation(position) {
     const lat = position.coords.latitude;
     const lng = position.coords.longitude;
     const accuracy = position.coords.accuracy;
-    
+
     // Update display
     coordinatesEl.textContent = `Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`;
     accuracyEl.textContent = `Accuracy: ${accuracy} meters`;
     timestampEl.textContent = `Time: ${new Date(position.timestamp).toLocaleTimeString()}`;
-    
+
     // Center map on new location
     const newPos = new google.maps.LatLng(lat, lng);
     map.setCenter(newPos);
     map.setZoom(17);
-    
+
     // Add or update marker
     if (!marker) {
         marker = new google.maps.Marker({
@@ -70,15 +70,15 @@ function updateLocation(position) {
     } else {
         marker.setPosition(newPos);
     }
-    
+
     // Add to path
     path.push(newPos);
-    
+
     // Update polyline
     if (polyline) {
         polyline.setMap(null);
     }
-    
+
     polyline = new google.maps.Polyline({
         path: path,
         geodesic: true,
@@ -87,7 +87,7 @@ function updateLocation(position) {
         strokeWeight: 2,
         map: map
     });
-    
+
     // Save to history
     locationHistory.push({
         lat: lat,
@@ -100,7 +100,7 @@ function updateLocation(position) {
 // Handle errors
 function handleError(error) {
     let errorMessage;
-    switch(error.code) {
+    switch (error.code) {
         case error.PERMISSION_DENIED:
             errorMessage = "User denied the request for Geolocation.";
             break;
@@ -131,14 +131,14 @@ function stopTracking() {
 // Show history
 function showHistory() {
     historyEl.innerHTML = "<h3>Location History:</h3>";
-    
+
     if (locationHistory.length === 0) {
         historyEl.innerHTML += "<p>No location history available.</p>";
         return;
     }
-    
+
     const list = document.createElement('ul');
-    
+
     locationHistory.forEach((location, index) => {
         const item = document.createElement('li');
         item.innerHTML = `
@@ -149,7 +149,7 @@ function showHistory() {
         `;
         list.appendChild(item);
     });
-    
+
     historyEl.appendChild(list);
 }
 
