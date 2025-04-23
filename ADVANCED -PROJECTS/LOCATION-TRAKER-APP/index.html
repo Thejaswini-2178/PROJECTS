@@ -1,31 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Location Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <h1>Location Tracker App</h1>
-    
+
     <button id="startTracking">Start Tracking</button>
     <button id="stopTracking" disabled>Stop Tracking</button>
     <button id="showHistory">Show History</button>
-    
+
     <div id="map"></div>
-    
+
     <div id="locationData">
         <h3>Current Location:</h3>
         <p id="coordinates">Latitude: , Longitude: </p>
         <p id="accuracy">Accuracy: </p>
         <p id="timestamp">Time: </p>
     </div>
-    
+
     <div id="history"></div>
 
     <!-- Load Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
     <script src="script.js"></script>
 </body>
+
 </html>
