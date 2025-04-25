@@ -46,10 +46,10 @@ app.post('/api/chat', async (req, res) => {
         res.json(response.data);
     } catch (error) {
         console.error('Error:', error.response?.data || error.message);
-        
+
         const statusCode = error.response?.status || 500;
         const errorMessage = error.response?.data?.error?.message || 'Failed to process your request';
-        
+
         res.status(statusCode).json({ error: errorMessage });
     }
 });
