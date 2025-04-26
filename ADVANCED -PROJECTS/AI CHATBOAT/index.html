@@ -3,277 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Boat Experience</title>
+    <title>AI Boat Assistant</title>
     <style>
-        :root {
-            --ocean-blue: #1a6bb0;
-            --boat-brown: #5d4037;
-            --sail-white: #f5f5f5;
-            --sun-yellow: #ffd54f;
-            --wave-blue: #4fc3f7;
-        }
-
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, var(--ocean-blue), #0d47a1);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: white;
+            background: #e0f7fa;
+            color: #01579b;
         }
 
         .container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            box-sizing: border-box;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #0277bd;
         }
 
-        .subtitle {
-            text-align: center;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .scene {
-            position: relative;
-            width: 100%;
-            height: 60vh;
-            overflow: hidden;
+        .boat-scene {
+            height: 200px;
+            background: linear-gradient(to bottom, #4fc3f7, #0288d1);
             border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .sun {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            background-color: var(--sun-yellow);
-            border-radius: 50%;
-            top: 50px;
-            right: 100px;
-            box-shadow: 0 0 50px var(--sun-yellow);
-            animation: sunPulse 8s infinite alternate;
-        }
-
-        .ocean {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 40%;
-            background: linear-gradient(to bottom, var(--wave-blue), var(--ocean-blue));
-        }
-
-        .wave {
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%234fc3f7" opacity=".25"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" fill="%234fc3f7" opacity=".5"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%234fc3f7"/></svg>');
-            background-repeat: repeat-x;
-            background-position: 0 bottom;
-            background-size: 50% 100px;
-            animation: waveMove 15s linear infinite;
+            position: relative;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .boat {
             position: absolute;
-            bottom: 20%;
-            left: 30%;
-            width: 150px;
-            height: 100px;
+            bottom: 30px;
+            left: 50%;
+            width: 100px;
+            height: 60px;
             transform: translateX(-50%);
-            animation: boatRock 5s ease-in-out infinite;
-            z-index: 10;
+            animation: rock 3s ease-in-out infinite;
         }
 
         .boat-body {
+            width: 100px;
+            height: 20px;
+            background: #5d4037;
+            border-radius: 10px 10px 0 0;
             position: absolute;
             bottom: 0;
-            width: 120px;
-            height: 30px;
-            background-color: var(--boat-brown);
-            border-radius: 10px 10px 0 0;
         }
 
         .mast {
+            width: 4px;
+            height: 50px;
+            background: #5d4037;
             position: absolute;
-            bottom: 30px;
-            left: 60px;
-            width: 5px;
-            height: 80px;
-            background-color: var(--boat-brown);
+            bottom: 20px;
+            left: 50px;
         }
 
         .sail {
-            position: absolute;
-            bottom: 60px;
-            left: 65px;
             width: 0;
             height: 0;
-            border-left: 50px solid transparent;
+            border-left: 40px solid transparent;
             border-right: 0px solid transparent;
-            border-bottom: 70px solid var(--sail-white);
-            transform-origin: bottom left;
-            animation: sailWave 7s ease-in-out infinite;
-        }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 600px;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(5px);
-        }
-
-        .control-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            font-size: 16px;
-        }
-
-        button {
-            background-color: var(--sun-yellow);
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            background-color: #ffc107;
-            transform: translateY(-2px);
-        }
-
-        .ai-response {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            min-height: 100px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        @keyframes waveMove {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-50%);
-            }
-        }
-
-        @keyframes boatRock {
-            0%, 100% {
-                transform: translateX(-50%) rotate(-5deg);
-            }
-            50% {
-                transform: translateX(-50%) rotate(5deg);
-            }
-        }
-
-        @keyframes sailWave {
-            0%, 100% {
-                transform: rotate(-5deg);
-            }
-            50% {
-                transform: rotate(5deg);
-            }
-        }
-
-        @keyframes sunPulse {
-            0% {
-                box-shadow: 0 0 50px var(--sun-yellow);
-            }
-            100% {
-                box-shadow: 0 0 80px var(--sun-yellow);
-            }
-        }
-
-        .cloud {
+            border-bottom: 60px solid #ffffff;
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: cloudMove linear infinite;
+            bottom: 50px;
+            left: 54px;
+            animation: sail 4s ease-in-out infinite;
         }
 
-        @keyframes cloudMove {
-            0% {
-                transform: translateX(100vw);
-            }
-            100% {
-                transform: translateX(-100px);
-            }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            width: 200%;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="%230288d1" opacity=".25"/></svg>');
+            background-repeat: repeat-x;
+            animation: wave 10s linear infinite;
         }
 
-        @media (max-width: 768px) {
-            .scene {
-                height: 40vh;
-            }
-            
-            .boat {
-                width: 100px;
-            }
-            
-            .boat-body {
-                width: 80px;
-            }
-            
-            .mast {
-                left: 40px;
-                height: 60px;
-            }
-            
-            .sail {
-                border-left: 30px solid transparent;
-                border-bottom: 50px solid var(--sail-white);
-            }
+        .chat-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 20px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: #e3f2fd;
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: #bbdefb;
+            margin-right: auto;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #b3e5fc;
+            border-radius: 5px;
+        }
+
+        #send-btn {
+            padding: 10px 20px;
+            background: #0288d1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #send-btn:hover {
+            background: #0277bd;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes rock {
+            0%, 100% { transform: translateX(-50%) rotate(-5deg); }
+            50% { transform: translateX(-50%) rotate(5deg); }
+        }
+
+        @keyframes sail {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>AI Boat Experience</h1>
-        <p class="subtitle">Navigate the digital seas with AI assistance</p>
+        <h1>AI Boat Assistant</h1>
         
-        <div class="scene">
-            <div class="sun"></div>
-            <div id="clouds"></div>
-            <div class="ocean">
-                <div class="wave"></div>
-            </div>
+        <div class="boat-scene">
+            <div class="wave"></div>
             <div class="boat">
                 <div class="mast"></div>
                 <div class="sail"></div>
@@ -281,150 +170,99 @@
             </div>
         </div>
         
-        <div class="controls">
-            <div class="control-group">
-                <label for="aiQuestion">Ask the AI Captain:</label>
-                <input type="text" id="aiQuestion" placeholder="What should I know about sailing?">
+        <div class="chat-container">
+            <div class="chat-box" id="chat-box">
+                <div class="message bot-message">
+                    Ahoy there! I'm your AI Boat Assistant. Ask me about sailing, weather, or anything boat-related!
+                </div>
             </div>
             
-            <div class="control-group">
-                <label for="boatSpeed">Boat Speed:</label>
-                <select id="boatSpeed">
-                    <option value="slow">Slow (Gentle Waves)</option>
-                    <option value="medium" selected>Medium (Normal Waves)</option>
-                    <option value="fast">Fast (Rough Seas)</option>
-                </select>
-            </div>
-            
-            <button id="askButton">Ask AI</button>
-            
-            <div class="ai-response" id="aiResponse">
-                <p>Welcome aboard! I'm your AI captain. Ask me anything about sailing, boats, or marine life, and I'll help navigate your questions.</p>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Type your question here..." autofocus>
+                <button id="send-btn">Send</button>
             </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Create clouds
-            createClouds();
+            const chatBox = document.getElementById('chat-box');
+            const userInput = document.getElementById('user-input');
+            const sendBtn = document.getElementById('send-btn');
             
-            // Set up event listeners
-            document.getElementById('askButton').addEventListener('click', askAI);
-            document.getElementById('aiQuestion').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    askAI();
-                }
-            });
-            
-            document.getElementById('boatSpeed').addEventListener('change', function() {
-                adjustWaveSpeed(this.value);
-            });
-            
-            // AI responses (simulated - in a real app you'd connect to an API)
-            const aiResponses = {
-                "hello": "Ahoy there! Welcome to our virtual boat experience. How can I assist you today?",
-                "weather": "The current virtual weather is sunny with gentle waves. Perfect sailing conditions!",
-                "sailing tips": "Here are three quick sailing tips: 1) Always check the weather before departure. 2) Keep your weight balanced in the boat. 3) Practice tacking and jibing in open water.",
-                "boat types": "There are many types of boats: Sailboats (like this one), motorboats, yachts, catamarans, and more. Each serves different purposes on the water.",
-                "safety": "Boat safety is crucial! Always have life jackets for everyone, check your equipment, file a float plan, and avoid alcohol while operating the boat.",
-                "default": "I'm your AI sailing assistant. While I can't actually sail this virtual boat, I can share knowledge about sailing techniques, boat maintenance, marine life, and more. What would you like to know?"
-            };
-            
-            // Function to simulate AI responses
-            function askAI() {
-                const questionInput = document.getElementById('aiQuestion');
-                const responseArea = document.getElementById('aiResponse');
-                const question = questionInput.value.toLowerCase().trim();
+            // Handle sending messages
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === '') return;
                 
-                // Simple response matching - in reality you'd call an AI API
-                let response = aiResponses.default;
+                // Add user message to chat
+                addMessage(message, 'user');
+                userInput.value = '';
                 
-                if (question.includes('hello') || question.includes('hi')) {
-                    response = aiResponses.hello;
-                } else if (question.includes('weather')) {
-                    response = aiResponses.weather;
-                } else if (question.includes('tip') || question.includes('advice')) {
-                    response = aiResponses["sailing tips"];
-                } else if (question.includes('type') || question.includes('kind')) {
-                    response = aiResponses["boat types"];
-                } else if (question.includes('safe') || question.includes('danger')) {
-                    response = aiResponses.safety;
-                }
-                
-                // Animate the response
-                responseArea.style.opacity = '0';
+                // Get AI response
                 setTimeout(() => {
-                    responseArea.innerHTML = `<p>${response}</p>`;
-                    responseArea.style.opacity = '1';
+                    const response = getAIResponse(message);
+                    addMessage(response, 'bot');
                     
-                    // Add boat animation when responding
-                    document.querySelector('.boat').classList.add('responding');
-                    setTimeout(() => {
-                        document.querySelector('.boat').classList.remove('responding');
-                    }, 2000);
+                    // Scroll to bottom
+                    chatBox.scrollTop = chatBox.scrollHeight;
                 }, 500);
+            }
+            
+            // Add message to chat box
+            function addMessage(text, sender) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(sender + '-message');
+                messageDiv.textContent = text;
+                chatBox.appendChild(messageDiv);
+            }
+            
+            // Generate AI response
+            function getAIResponse(question) {
+                const lowerQuestion = question.toLowerCase();
                 
-                // Clear the input
-                questionInput.value = '';
+                // Sailing questions
+                if (lowerQuestion.includes('sail') || lowerQuestion.includes('boat')) {
+                    return "Sailing is the art of controlling a boat using the wind. The key is to position your sails correctly relative to the wind direction.";
+                }
+                
+                // Weather questions
+                if (lowerQuestion.includes('weather') || lowerQuestion.includes('wind')) {
+                    return "For sailing, you want steady winds between 5-20 knots. Avoid storms and check weather forecasts before heading out.";
+                }
+                
+                // Safety questions
+                if (lowerQuestion.includes('safe') || lowerQuestion.includes('danger')) {
+                    return "Always wear life jackets, check your equipment, and let someone know your sailing plan. Safety first!";
+                }
+                
+                // Direction questions
+                if (lowerQuestion.includes('direction') || lowerQuestion.includes('navigate')) {
+                    return "Use a compass and nautical charts. The wind direction determines how you should position your sails.";
+                }
+                
+                // Maintenance questions
+                if (lowerQuestion.includes('maintain') || lowerQuestion.includes('care')) {
+                    return "Regularly check your boat for damage, clean the hull, and service the engine if you have one. Saltwater is corrosive!";
+                }
+                
+                // Greetings
+                if (lowerQuestion.includes('hello') || lowerQuestion.includes('hi')) {
+                    return "Ahoy there! Ready to set sail? What can I help you with today?";
+                }
+                
+                // Default response
+                return "I'm an AI specialized in boating and sailing. Can you ask me something more specific about boats or sailing?";
             }
             
-            // Adjust wave speed based on selection
-            function adjustWaveSpeed(speed) {
-                const wave = document.querySelector('.wave');
-                switch(speed) {
-                    case 'slow':
-                        wave.style.animationDuration = '20s';
-                        document.querySelector('.boat').style.animationDuration = '8s';
-                        break;
-                    case 'fast':
-                        wave.style.animationDuration = '8s';
-                        document.querySelector('.boat').style.animationDuration = '3s';
-                        break;
-                    default:
-                        wave.style.animationDuration = '15s';
-                        document.querySelector('.boat').style.animationDuration = '5s';
+            // Event listeners
+            sendBtn.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
                 }
-            }
-            
-            // Create random clouds
-            function createClouds() {
-                const cloudsContainer = document.getElementById('clouds');
-                for (let i = 0; i < 5; i++) {
-                    const cloud = document.createElement('div');
-                    cloud.className = 'cloud';
-                    
-                    // Random cloud properties
-                    const size = Math.random() * 50 + 30;
-                    const top = Math.random() * 100 + 10;
-                    const opacity = Math.random() * 0.5 + 0.3;
-                    const duration = Math.random() * 40 + 60;
-                    const delay = Math.random() * -60;
-                    
-                    cloud.style.width = `${size}px`;
-                    cloud.style.height = `${size * 0.6}px`;
-                    cloud.style.top = `${top}px`;
-                    cloud.style.left = `${Math.random() * 100}px`;
-                    cloud.style.opacity = opacity;
-                    cloud.style.animationDuration = `${duration}s`;
-                    cloud.style.animationDelay = `${delay}s`;
-                    
-                    // Create cloud fluff
-                    for (let j = 0; j < 3; j++) {
-                        const fluff = document.createElement('div');
-                        fluff.style.position = 'absolute';
-                        fluff.style.backgroundColor = 'inherit';
-                        fluff.style.borderRadius = '50%';
-                        fluff.style.width = `${size * 0.7}px`;
-                        fluff.style.height = `${size * 0.7}px`;
-                        fluff.style.top = `${Math.random() * 20 - 10}px`;
-                        fluff.style.left = `${Math.random() * 40 - 20}px`;
-                        cloud.appendChild(fluff);
-                    }
-                    
-                    cloudsContainer.appendChild(cloud);
-                }
-            }
+            });
         });
     </script>
 </body>
