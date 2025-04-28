@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,43 +130,67 @@
             animation: typingAnimation 1.4s infinite ease-in-out;
         }
 
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        .typing-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes typingAnimation {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-5px);
+            }
         }
 
         @media (max-width: 600px) {
             .chat-container {
                 padding: 10px;
             }
-            
+
             .message {
                 max-width: 90%;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="chat-container">
         <div class="chat-header">
             <h1>AI Chat Assistant</h1>
         </div>
-        
+
         <div class="chat-messages" id="chat-messages">
             <div class="message bot-message">
                 Hello! I'm your AI assistant. How can I help you today?
             </div>
         </div>
-        
+
         <div class="input-area">
             <input type="text" id="user-input" placeholder="Type your message..." autofocus>
             <button id="send-btn">Send</button>
@@ -177,7 +202,7 @@
             const chatMessages = document.getElementById('chat-messages');
             const userInput = document.getElementById('user-input');
             const sendBtn = document.getElementById('send-btn');
-            
+
             // Improved AI response system
             const aiResponses = {
                 greetings: {
@@ -226,7 +251,7 @@
                     ]
                 }
             };
-            
+
             // Add message to chat
             const addMessage = (text, sender) => {
                 const messageDiv = document.createElement('div');
@@ -235,7 +260,7 @@
                 chatMessages.appendChild(messageDiv);
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             };
-            
+
             // Show typing indicator
             const showTyping = () => {
                 const typingDiv = document.createElement('div');
@@ -249,12 +274,12 @@
                 chatMessages.scrollTop = chatMessages.scrollHeight;
                 return typingDiv;
             };
-            
+
             // Get AI response
             const getAIResponse = (question) => {
                 for (const [category, data] of Object.entries(aiResponses)) {
                     if (category === 'default') continue;
-                    
+
                     for (const pattern of data.patterns) {
                         if (pattern.test(question)) {
                             if (typeof data.responses === 'function') {
@@ -264,29 +289,29 @@
                         }
                     }
                 }
-                
+
                 return aiResponses.default.responses[
                     Math.floor(Math.random() * aiResponses.default.responses.length)
                 ];
             };
-            
+
             // Handle sending messages
             const handleSend = () => {
                 const message = userInput.value.trim();
                 if (!message) return;
-                
+
                 addMessage(message, 'user');
                 userInput.value = '';
-                
+
                 const typingIndicator = showTyping();
-                
+
                 setTimeout(() => {
                     chatMessages.removeChild(typingIndicator);
                     const response = getAIResponse(message);
                     addMessage(response, 'bot');
                 }, 1000 + Math.random() * 1000);
             };
-            
+
             // Event listeners
             sendBtn.addEventListener('click', handleSend);
             userInput.addEventListener('keypress', (e) => {
@@ -295,4 +320,5 @@
         });
     </script>
 </body>
+
 </html>
