@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDiceFace(diceElement, value) {
         // Clear existing dots
         diceElement.innerHTML = '';
-        
+
         // Create dots based on dice value
-        switch(value) {
+        switch (value) {
             case 1:
                 diceElement.innerHTML = '<div class="dot center"></div>';
                 break;
@@ -67,26 +67,26 @@ document.addEventListener('DOMContentLoaded', () => {
         // Disable button during animation
         rollButton.disabled = true;
         resultElement.textContent = '';
-        
+
         // Add rolling animation
         dice1.classList.add('rolling');
         dice2.classList.add('rolling');
-        
+
         // Roll dice after a short delay for animation
         setTimeout(() => {
             const value1 = rollDie();
             const value2 = rollDie();
-            
+
             updateDiceFace(dice1, value1);
             updateDiceFace(dice2, value2);
-            
+
             // Remove rolling animation
             dice1.classList.remove('rolling');
             dice2.classList.remove('rolling');
-            
+
             // Show result
             resultElement.textContent = `You rolled ${value1 + value2} (${value1} + ${value2})`;
-            
+
             // Re-enable button
             rollButton.disabled = false;
         }, 1000);
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Add click event to roll button
     rollButton.addEventListener('click', rollDice);
-    
+
     // Initialize dice with random values
     rollDice();
 });
