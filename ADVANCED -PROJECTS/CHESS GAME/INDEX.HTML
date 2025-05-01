@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Chess Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="chess-container">
+        <div class="game-info">
+            <h1>Chess Game</h1>
+            <div class="player-info">
+                <div class="player white">
+                    <span class="player-name">White</span>
+                    <span class="player-time" id="white-time">10:00</span>
+                </div>
+                <div class="player black">
+                    <span class="player-name">Black</span>
+                    <span class="player-time" id="black-time">10:00</span>
+                </div>
+            </div>
+            <div class="game-controls">
+                <button id="new-game-btn">New Game</button>
+                <button id="flip-board-btn">Flip Board</button>
+            </div>
+            <div class="move-history" id="move-history"></div>
+        </div>
+        <div class="chessboard" id="chessboard"></div>
+        <div class="captured-pieces">
+            <h3>Captured Pieces</h3>
+            <div class="captured-white" id="captured-white"></div>
+            <div class="captured-black" id="captured-black"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="game-over-modal">
+        <div class="modal-content">
+            <h2 id="game-over-text">Checkmate!</h2>
+            <p id="game-over-details">White wins by checkmate</p>
+            <button id="play-again-btn">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
