@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Analytics Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1>Analytics Dashboard</h1>
+            <div class="header-controls">
+                <div class="theme-toggle">
+                    <i class="fas fa-sun"></i>
+                    <label class="switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="date-range">
+                    <select id="time-period">
+                        <option value="week">Last Week</option>
+                        <option value="month" selected>Last Month</option>
+                        <option value="quarter">Last Quarter</option>
+                        <option value="year">Last Year</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-chart-line"></i> Overview</a></li>
+                    <li><a href="#"><i class="fas fa-shopping-cart"></i> Sales</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="#"><i class="fas fa-box-open"></i> Inventory</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Total Revenue</h3>
+                        <p class="metric-value">$24,780</p>
+                        <p class="metric-change positive">+12.5%</p>
+                    </div>
+                    <i class="fas fa-dollar-sign metric-icon"></i>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>New Customers</h3>
+                        <p class="metric-value">1,245</p>
+                        <p class="metric-change positive">+8.3%</p>
+                    </div>
+                    <i class="fas fa-user-plus metric-icon"></i>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Conversion Rate</h3>
+                        <p class="metric-value">3.42%</p>
+                        <p class="metric-change negative">-0.8%</p>
+                    </div>
+                    <i class="fas fa-percent metric-icon"></i>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h3>Avg. Order Value</h3>
+                        <p class="metric-value">$89.54</p>
+                        <p class="metric-change positive">+5.2%</p>
+                    </div>
+                    <i class="fas fa-shopping-basket metric-icon"></i>
+                </div>
+            </div>
+
+            <div class="chart-row">
+                <div class="chart-card">
+                    <h3>Revenue Trend</h3>
+                    <canvas id="revenueChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Traffic Sources</h3>
+                    <canvas id="trafficChart"></canvas>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <div class="table-header">
+                    <h3>Recent Orders</h3>
+                    <div class="table-controls">
+                        <input type="text" id="order-search" placeholder="Search orders...">
+                        <button class="export-btn">Export <i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- Filled by JavaScript -->
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    <div class="pagination">
+                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <span class="page-info">Page 1 of 5</span>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
