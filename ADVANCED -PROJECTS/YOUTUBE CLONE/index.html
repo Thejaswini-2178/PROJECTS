@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Clone</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <i class="fas fa-bars menu-icon"></i>
+            <div class="logo">
+                <i class="fab fa-youtube youtube-icon"></i>
+                <span>YouTube</span>
+            </div>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
+            <i class="fas fa-microphone microphone-icon"></i>
+        </div>
+        <div class="icons-container">
+            <i class="fas fa-video"></i>
+            <i class="fas fa-th"></i>
+            <i class="fas fa-bell"></i>
+            <div class="user-icon">A</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-item active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-compass"></i>
+                <span>Explore</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-subscript"></i>
+                <span>Subscriptions</span>
+            </div>
+            <hr>
+            <div class="sidebar-item">
+                <i class="fas fa-photo-video"></i>
+                <span>Library</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-clock"></i>
+                <span>Watch Later</span>
+            </div>
+            <div class="sidebar-item">
+                <i class="fas fa-thumbs-up"></i>
+                <span>Liked Videos</span>
+            </div>
+            <hr>
+            <h3 class="subscriptions-title">SUBSCRIPTIONS</h3>
+            <div class="sidebar-item">
+                <div class="channel-icon">T</div>
+                <span>Tech Channel</span>
+            </div>
+            <div class="sidebar-item">
+                <div class="channel-icon">M</div>
+                <span>Music Channel</span>
+            </div>
+            <div class="sidebar-item">
+                <div class="channel-icon">G</div>
+                <span>Gaming Channel</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="categories">
+                <button class="category active">All</button>
+                <button class="category">Music</button>
+                <button class="category">Gaming</button>
+                <button class="category">Live</button>
+                <button class="category">Programming</button>
+                <button class="category">Comedy</button>
+                <button class="category">Podcasts</button>
+                <button class="category">Recently uploaded</button>
+                <button class="category">Watched</button>
+            </div>
+
+            <div class="videos-container" id="videosContainer">
+                <!-- Videos will be added here by JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
