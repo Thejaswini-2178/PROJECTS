@@ -82,11 +82,11 @@ const sidebarItems = document.querySelectorAll('.sidebar-item');
 // Display videos
 function displayVideos() {
     videosContainer.innerHTML = '';
-    
+
     videos.forEach(video => {
         const videoCard = document.createElement('div');
         videoCard.className = 'video-card';
-        
+
         videoCard.innerHTML = `
             <div class="thumbnail">
                 <img src="${video.thumbnail}" alt="${video.title}">
@@ -101,7 +101,7 @@ function displayVideos() {
                 </div>
             </div>
         `;
-        
+
         videosContainer.appendChild(videoCard);
     });
 }
