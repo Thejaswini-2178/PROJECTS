@@ -1,5 +1,5 @@
 // Amazon Clone - JavaScript Implementation
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Inject CSS dynamically
     const style = document.createElement('style');
     style.textContent = `
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Add event listeners to all add-to-cart buttons
         document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
+            button.addEventListener('click', function () {
                 const productId = parseInt(this.closest('.product-card').getAttribute('data-id'));
                 const product = products.find(p => p.id === productId);
                 alert(`Added to cart: ${product.title}`);
