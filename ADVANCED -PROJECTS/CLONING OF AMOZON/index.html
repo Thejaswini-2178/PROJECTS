@@ -1,159 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amazon Clone</title>
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <header id="header">
-        <div class="logo">amazon</div>
-        <div class="delivery-location">
-            <i class="fas fa-map-marker-alt"></i>
-            <div class="location-text">
-                <span class="deliver-to">Deliver to</span>
-                <span class="country">United States</span>
+    <header>
+        <div class="navbar">
+            <div class="nav-logo border">
+                <div class="logo"></div>
             </div>
-        </div>
-        <div class="search-bar">
-            <select class="search-categories">
-                <option>All</option>
-                <option>Electronics</option>
-                <option>Books</option>
-                <option>Home</option>
-                <option>Fashion</option>
-            </select>
-            <input type="text" class="search-input" placeholder="Search Amazon">
-            <button class="search-button"><i class="fas fa-search"></i></button>
-        </div>
-        <div class="account-actions">
-            <div class="account-dropdown">
-                <span>Hello, sign in</span>
-                <span>Account & Lists <i class="fas fa-caret-down"></i></span>
+            
+            <div class="nav-address border">
+                <p class="add-first">Deliver to</p>
+                <div class="add-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p class="add-second">India</p>
+                </div>
             </div>
-        </div>
-        <div class="returns-orders">
-            <span>Returns</span>
-            <span>& Orders</span>
-        </div>
-        <div class="cart">
-            <div class="cart-icon">
+            
+            <div class="nav-search">
+                <select class="search-select">
+                    <option>All</option>
+                </select>
+                <input type="text" placeholder="Search Amazon" class="search-input">
+                <div class="search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            
+            <div class="nav-signin border">
+                <p><span>Hello, Sign in</span></p>
+                <p class="nav-second">Account & Lists</p>
+            </div>
+            
+            <div class="nav-return border">
+                <p><span>Returns</span></p>
+                <p class="nav-second">& Orders</p>
+            </div>
+            
+            <div class="nav-cart border">
                 <i class="fas fa-shopping-cart"></i>
-                <span class="cart-count">0</span>
+                <span id="cart-count">0</span>
+                <p>Cart</p>
             </div>
-            <span class="cart-text">Cart</span>
+        </div>
+        
+        <div class="panel">
+            <div class="panel-all">
+                <i class="fas fa-bars"></i>
+                All
+            </div>
+            <div class="panel-ops">
+                <p>Today's Deals</p>
+                <p>Customer Service</p>
+                <p>Registry</p>
+                <p>Gift Cards</p>
+                <p>Sell</p>
+            </div>
+            <div class="panel-deals">
+                Shop deals in Electronics
+            </div>
         </div>
     </header>
-
-    <nav id="navbar">
-        <div class="hamburger-menu">
-            <i class="fas fa-bars"></i>
-            <span>All</span>
-        </div>
-        <div class="nav-links">
-            <a href="#">Today's Deals</a>
-            <a href="#">Customer Service</a>
-            <a href="#">Registry</a>
-            <a href="#">Gift Cards</a>
-            <a href="#">Sell</a>
-        </div>
-        <div class="nav-promo">
-            Shop great deals now
-        </div>
-    </nav>
-
+    
     <div class="hero-section">
-        <div class="hero-content">
-            <h1>Welcome to Amazon Clone</h1>
-            <p>Shop millions of products with fast delivery</p>
-            <button class="shop-now-btn">Shop now</button>
+        <div class="hero-msg">
+            <p>You are on amazon.com. You can also shop on Amazon India for millions of products with fast local delivery. <a href="#">Click here to go to amazon.in</a></p>
         </div>
     </div>
-
-    <main class="main-content">
-        <section class="product-section">
-            <h2 class="section-title">Featured Products</h2>
-            <div class="product-grid" id="product-grid">
-                <!-- Products will be loaded here by JavaScript -->
-            </div>
-        </section>
-
-        <section class="deals-section">
-            <h2 class="section-title">Today's Deals</h2>
-            <div class="deals-grid" id="deals-grid">
-                <!-- Deals will be loaded here by JavaScript -->
-            </div>
-        </section>
-    </main>
-
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div class="cart-header">
-            <h3>Your Cart</h3>
-            <button class="close-cart"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="cart-items" id="cart-items">
-            <!-- Cart items will be loaded here -->
-        </div>
-        <div class="cart-total">
-            <span>Subtotal (<span id="cart-item-count">0</span> items):</span>
-            <span class="total-price">$0.00</span>
-        </div>
-        <button class="checkout-btn">Proceed to Checkout</button>
+    
+    <div class="shop-section" id="products-container">
+        <!-- Products will be loaded here via JavaScript -->
     </div>
-    <div class="overlay" id="overlay"></div>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Get to Know Us</h4>
-                <ul>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">About Amazon</a></li>
-                    <li><a href="#">Investor Relations</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Make Money with Us</h4>
-                <ul>
-                    <li><a href="#">Sell products on Amazon</a></li>
-                    <li><a href="#">Sell on Amazon Business</a></li>
-                    <li><a href="#">Become an Affiliate</a></li>
-                    <li><a href="#">Advertise Your Products</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Amazon Payment Products</h4>
-                <ul>
-                    <li><a href="#">Amazon Business Card</a></li>
-                    <li><a href="#">Shop with Points</a></li>
-                    <li><a href="#">Reload Your Balance</a></li>
-                    <li><a href="#">Amazon Currency Converter</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Let Us Help You</h4>
-                <ul>
-                    <li><a href="#">Amazon and COVID-19</a></li>
-                    <li><a href="#">Your Account</a></li>
-                    <li><a href="#">Your Orders</a></li>
-                    <li><a href="#">Shipping Rates & Policies</a></li>
-                </ul>
-            </div>
+    
+    <div class="cart-section" id="cart-section" style="display: none;">
+        <h2>Your Shopping Cart</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total"></div>
+        <button id="checkout-btn">Proceed to Checkout</button>
+        <button id="continue-shopping">Continue Shopping</button>
+    </div>
+    
+    <footer>
+        <div class="foot-panel1">
+            Back to Top
         </div>
-        <div class="footer-bottom">
-            <div class="logo">amazon</div>
+        
+        <div class="foot-panel2">
+            <ul>
+                <p>Get to Know Us</p>
+                <a>Careers</a>
+                <a>Blog</a>
+                <a>About Amazon</a>
+                <a>Investor Relations</a>
+                <a>Amazon Devices</a>
+                <a>Amazon Science</a>
+            </ul>
+            <ul>
+                <p>Make Money with Us</p>
+                <a>Sell products on Amazon</a>
+                <a>Sell on Amazon Business</a>
+                <a>Sell apps on Amazon</a>
+                <a>Become an Affiliate</a>
+                <a>Advertise Your Products</a>
+                <a>Self-Publish with Us</a>
+                <a>Host an Amazon Hub</a>
+            </ul>
+            <ul>
+                <p>Amazon Payment Products</p>
+                <a>Amazon Business Card</a>
+                <a>Shop with Points</a>
+                <a>Reload Your Balance</a>
+                <a>Amazon Currency Converter</a>
+            </ul>
+            <ul>
+                <p>Let Us Help You</p>
+                <a>Amazon and COVID-19</a>
+                <a>Your Account</a>
+                <a>Your Orders</a>
+                <a>Shipping Rates & Policies</a>
+                <a>Returns & Replacements</a>
+                <a>Manage Your Content and Devices</a>
+                <a>Amazon Assistant</a>
+                <a>Help</a>
+            </ul>
+        </div>
+        
+        <div class="foot-panel3">
+            <div class="logo"></div>
+        </div>
+        
+        <div class="foot-panel4">
+            <div class="pages">
+                <a>Conditions of Use</a>
+                <a>Privacy Notice</a>
+                <a>Interest-Based Ads</a>
+            </div>
             <div class="copyright">
-                <span>&copy; 1996-<span id="current-year"></span>, Amazon.com, Inc. or its affiliates</span>
+                © 1996-2023, Amazon.com, Inc. or its affiliates
             </div>
         </div>
     </footer>
-
+    
     <script src="script.js"></script>
 </body>
-
 </html>
